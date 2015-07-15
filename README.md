@@ -1,7 +1,7 @@
-GMO Payment Gateway PHP SDK
-===========================
+GMO Payment Gateway
+===================
 
-This is a PHP library for the GMO Payment Platform, supporting the PG Multi Payment API, exec transactions, register users, and so on.
+This is a PHP library for the GMO Payment Gateway, supporting the PG Multi Payment API, exec transactions, register users, and so on.
 
 Installation
 ------------
@@ -34,16 +34,16 @@ catch (exception $e) {
 More examples are available on examples directory.
 
 Shop API
----
+--------
 
 In this library, we have defined as "Shop API" an API that requires shop ID and shop password to the API call.
 
 Site API
----
+--------
 
 An API that requires site ID and site password to the API call.
 
 ShopAndSite API
----
+---------------
 
 An API that requires shop ID, shop password, site ID and site password to the API call.

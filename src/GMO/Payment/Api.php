@@ -865,7 +865,7 @@ class Api {
       throw new \Exception(sprintf('API method %s does not exist.', $method));
     }
     $this->method = $method;
-    $this->apiUrl = $this->host . '/' . self::$API_METHODS[$method];
+    $this->apiUrl = $this->host . '/' . self::$apiMethods[$method];
     // Initinial parameters.
     $this->initParams();
     // Add new params.
@@ -889,10 +889,13 @@ class Api {
     $params = array();
     $mapping = $this->getParamsMapping();
     foreach ($this->params as $key => $value) {
-      if (isset($mapping[$key]) && isset($mapping[$key]['encode']) && $mapping[$key]['encode'] === TRUE) {
+      if (isset($mapping[$key])) {
         $gmo_key = $mapping[$key]['key'];
         // Only convert fields which need to be convert.
-        $params[$gmo_key] = mb_convert_encoding($value, 'SJIS', 'UTF-8');
+        if (isset($mapping[$key]['encode']) && $mapping[$key]['encode'] === TRUE) {
+          $value = mb_convert_encoding($value, 'SJIS', 'UTF-8');
+        }
+        $params[$gmo_key] = $value;
       }
     }
     return $params;

@@ -29,6 +29,9 @@ class SiteApi extends Api {
    * Site api constructor.
    */
   public function __construct($host, $site_id, $site_pass, $params = array()) {
+    if (!is_array($params)) {
+      $params = array();
+    }
     $params['site_id']   = $site_id;
     $params['site_pass'] = $site_pass;
     parent::__construct($host, $params);
@@ -193,6 +196,9 @@ class SiteApi extends Api {
    *   有効性チェックを行ったときの仕向先 コード
    */
   public function saveCard($member_id, $card_no, $expire, $data = array()) {
+    if (!is_array($data)) {
+      $data = array();
+    }
     $data['member_id'] = $member_id;
     $data['card_no']   = $card_no;
     $data['expire']    = $expire;
@@ -205,6 +211,9 @@ class SiteApi extends Api {
    * See @saveCard.
    */
   public function updateCard($card_seq, $member_id, $card_no, $expire, $data = array()) {
+    if (!is_array($data)) {
+      $data = array();
+    }
     $data['card_seq'] = $card_seq;
     return $this->saveCard($member_id, $card_no, $expire, $data);
   }
@@ -253,6 +262,9 @@ class SiteApi extends Api {
    * --DeleteFlag string(1)
    */
   public function searchCard($member_id, $seq_mode, $data = array()) {
+    if (!is_array($data)) {
+      $data = array();
+    }
     $data['member_id'] = $member_id;
     $data['seq_mode']  = $seq_mode;
     return $this->callApi('searchCard', $data);
@@ -284,6 +296,9 @@ class SiteApi extends Api {
    * --CardSeq integer(1)
    */
   public function deleteCard($member_id, $card_seq, $data = array()) {
+    if (!is_array($data)) {
+      $data = array();
+    }
     $data['member_id'] = $member_id;
     $data['card_seq']  = $card_seq;
     return $this->callApi('deleteCard', $data);

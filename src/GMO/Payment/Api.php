@@ -590,6 +590,67 @@ class Api {
   );
 
   /**
+   * Output parameters mapping.
+   */
+  public static $outputParams = array(
+    'AccessID'             => 'access_id',
+    'AccessPass'           => 'access_pass',
+    'ACS'                  => 'acs',
+    'AfterBalance'         => 'after_balance',
+    'Amount'               => 'amount',
+    'Approve'              => 'approve',
+    'BeforeBalance'        => 'before_balance',
+    'BkCode'               => 'bk_code',
+    'CancelAmount'         => 'cancel_amount',
+    'CancelTax'            => 'cancel_tax',
+    'CardActivateStatus'   => 'card_activate_status',
+    'CardInvalidStatus'    => 'card_invalid_status',
+    'CardName'             => 'card_name',
+    'CardNo'               => 'card_no',
+    'CardSeq'              => 'card_seq',
+    'CardTermStatus'       => 'card_term_status',
+    'CardTypeCode'         => 'card_type_code',
+    'CardValidLimit'       => 'card_valid_limit',
+    'CardWebInquiryStatus' => 'card_web_inquiry_status',
+    'CheckString'          => 'check_string',
+    'ClientField1'         => 'client_field_1',
+    'ClientField2'         => 'client_field_2',
+    'ClientField3'         => 'client_field_3',
+    'ConfNo'               => 'conf_no',
+    'ContinuanceMonth'     => 'continuance_month',
+    'Convenience'          => 'convenience',
+    'CustID'               => 'cust_id',
+    'DefaultFlag'          => 'default_flag',
+    'DeleteFlag'           => 'delete_flag',
+    'EdyOrderNo'           => 'edy_order_no',
+    'EncryptReceiptNo'     => 'encrypt_receipt_no',
+    'Expire'               => 'expire',
+    'Forward'              => 'forward',
+    'HolderName'           => 'holder_name',
+    'ItemCode'             => 'item_code',
+    'JobCd'                => 'job_cd',
+    'MemberID'             => 'member_id',
+    'MemberName'           => 'member_name',
+    'Method'               => 'method',
+    'OrderID'              => 'order_id',
+    'PaymentTerm'          => 'payment_term',
+    'PayTimes'             => 'pay_times',
+    'PayType'              => 'pay_type',
+    'ProcessDate'          => 'process_date',
+    'ReceiptNo'            => 'receipt_no',
+    'SiteID'               => 'site_id',
+    'StartLimitDate'       => 'start_limit_date',
+    'StartURL'             => 'start_url',
+    'Status'               => 'status',
+    'SuicaOrderNo'         => 'suica_order_no',
+    'Tax'                  => 'tax',
+    'Token'                => 'token',
+    'TranDate'             => 'tran_date',
+    'TranID'               => 'tran_id',
+    'TransactionId'        => 'transaction_id',
+  );
+
+  /**
    * Verify field by condition before call api.
    */
   public function verifyField($value, $condition) {
@@ -647,7 +708,7 @@ class Api {
    */
   protected $host;
   /**
-   * Exmaple: https://pt01.mul-pay.jp/payment/EntryTran.idPass.
+   * Example: https://pt01.mul-pay.jp/payment/EntryTran.idPass.
    */
   protected $apiUrl;
   /**
@@ -754,7 +815,7 @@ class Api {
     curl_setopt($ch, CURLOPT_POST, TRUE);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
     curl_setopt($ch, CURLOPT_FAILONERROR, TRUE);
     // Append post fields.
     if ($params) {
@@ -797,13 +858,21 @@ class Api {
     $first = current($data);
     $result = array();
     if (strpos($first, self::RESPONSE_SEPARATOR) === FALSE) {
-      $result = $data;
+      foreach ($data as $key => $value) {
+        if (isset(self::$outputParams[$key])) {
+          $key = self::$outputParams[$key];
+        }
+        $result[$key] = $value;
+      }
     }
     else {
       $multiple = TRUE;
       // Rearrange data with new structure.
       $data = array_map('self::responseSeparator', $data);
       foreach ($data as $key => $value) {
+        if (isset(self::$outputParams[$key])) {
+          $key = self::$outputParams[$key];
+        }
         foreach ($value as $k => $v) {
           if (!isset($result[$k])) {
             $result[$k] = array();
